@@ -1,33 +1,34 @@
-import requests
+import os
+import read_insta as m0
+import read_inspect as m1
 
-# Replace with your access token
-ACCESS_TOKEN = 'your_access_token'
-USER_ID = 'your_user_id'  # Replace with your Instagram User ID
-BASE_URL = 'https://graph.facebook.com/v17.0'
+os.system('cls')
 
-def get_followers():
-    url = f'{BASE_URL}/{USER_ID}/followers?access_token={ACCESS_TOKEN}'
-    response = requests.get(url)
-    followers_data = response.json()
-    print("Response:")
-    print(followers_data)
-    followers = {user['username'] for user in followers_data['data']}
-    return followers
+DATA_SOURCE = 1 # 0: Insta Data Download    1: Inspect element copy
 
-def get_following():
-    url = f'{BASE_URL}/{USER_ID}/following?access_token={ACCESS_TOKEN}'
-    response = requests.get(url)
-    following_data = response.json()
-    following = {user['username'] for user in following_data['data']}
-    return following
+followers = []
+following = []
 
-def calculate_percentage_not_following_back():
-    followers = get_followers()
-    following = get_following()
-    not_following_back = following - followers
-    percentage = (len(not_following_back) / len(following)) * 100
-    return percentage
+if DATA_SOURCE:
+    print("Analyzing data from inspector")
+    followers = m1.followers()
+    following = m1.following()
+else:
+    print("Analyzing data from instagram")
+    followers = m0.followers()
+    following = m0.following()
 
-if __name__ == "__main__":
-    percentage_not_following_back = calculate_percentage_not_following_back()
-    print(f"Percentage of people not following you back: {percentage_not_following_back:.2f}%")
+# Verify followers/following count
+print(f"Followers: {len(followers)}")
+print(f"Following: {len(following)}\n")
+
+# Print following that are not in followers
+not_following_back = [user for user in following if user not in followers]
+print(f"Found {len(not_following_back)} that don't follow you back:")
+
+display = ""
+while not(display in ["Y","y","N","n"]):
+    display = input("Do you want to display the list? (Y/N): ")
+if display in ['Y','y']:
+    for user in not_following_back:
+        print(user)
