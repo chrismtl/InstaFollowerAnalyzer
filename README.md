@@ -2,7 +2,7 @@
 Tired of having loads of followers that don't follow you back? Get the list here
 
 Steps:
-There are two possible methods for doing this, you choose which one you prefer:
+There are two possible methods for doing this, choose the one you prefer:
 
 Method 0: Classic method, takes less than 10 minutes, involves more clicks but is simple
 Method 1: Faster but more complex (you just have to search for the list in the tab inspector)
